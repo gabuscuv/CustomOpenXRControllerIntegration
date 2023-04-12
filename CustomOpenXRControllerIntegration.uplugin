@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "CustomOpenXRIntegration",
+	"FriendlyName": "CustomOpenXRControllerIntegration",
 	"Description": "",
 	"Category": "Other",
 	"CreatedBy": "Gabriel Bustillo del Cuvillo",
@@ -14,7 +14,10 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
-	"Plugins": [
+	"Plugins": [{
+			"Name": "OpenXR",
+			"Enabled": true
+		},
 		{
 			"Name": "OpenXRExpansionPlugin",
 			"Enabled": true
