@@ -1,4 +1,4 @@
-	// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -15,26 +15,26 @@ UCLASS()
 class CUSTOMOPENXRCONTROLLERINTEGRATION_API AOpenXRController : public AActor, public IOpenXRControllerInterface
 {
 	GENERATED_BODY()
-	
-public:	
+
+public:
 	// Sets default values for this actor's properties
 	AOpenXRController();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isLeftController = true;
 	UPROPERTY(BlueprintReadWrite)
-	UStaticMeshComponent* StaticMeshController;
+	UStaticMeshComponent *StaticMeshController;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString TrackingSystemName; 
+	FString TrackingSystemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EBPOpenXRControllerDeviceType DeviceType; 
-	#if WITH_EDITORONLY_DATA
+	EBPOpenXRControllerDeviceType DeviceType;
+#if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-		bool isSpoffingController = false;
-	#endif
+	bool isSpoffingController = false;
+#endif
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
-	void HighlightButtons(EButton buttom, bool state);
-	virtual	void HighlightButtons_Implementation(EButton buttom, bool state) override;
+	void HighlightButtons(EButton button, bool state, bool AddOffset);
+	virtual void HighlightButtons_Implementation(EButton button, bool state, bool AddOffset) override;
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
 	void ClearAllHighlightButtons();
@@ -44,7 +44,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	FString IsLeft();
 
 private:
@@ -54,23 +54,22 @@ private:
 	FString MaterialInstancePath = "/CustomOpenXRControllerIntegration/Materials/";
 
 	static inline TMap<int, FString> ControllersNamesDirectory = {
-												{(int)EBPOpenXRControllerDeviceType::DT_ValveIndexController, "ValveIndex"},
-												{(int)EBPOpenXRControllerDeviceType::DT_ViveController, "HTCVive"},
-												{(int)EBPOpenXRControllerDeviceType::DT_WMRController, "MicrosoftMixedReality"},
-											};
+		{(int)EBPOpenXRControllerDeviceType::DT_ValveIndexController, "ValveIndex"},
+		{(int)EBPOpenXRControllerDeviceType::DT_ViveController, "HTCVive"},
+		{(int)EBPOpenXRControllerDeviceType::DT_WMRController, "MicrosoftMixedReality"},
+	};
 
 	static inline TMap<FString, FString> SubTypeControllersNamesDirectory = {
-											{"TouchV1", "OculusTouch"},
-											{"TouchV2", "OculusTouch_v2"},
-											{"TouchV3", "OculusTouch_v3"},
-											{"TouchPro", "OculusTouch_v3"},
-											{"ReverbG2", "HPMixedReality"},
-										};
+		{"TouchV1", "OculusTouch"},
+		{"TouchV2", "OculusTouch_v2"},
+		{"TouchV3", "OculusTouch_v3"},
+		{"TouchPro", "OculusTouch_v3"},
+		{"ReverbG2", "HPMixedReality"},
+	};
 
 	void SetMesh();
 	FString GetMeshPathString(EBPOpenXRControllerDeviceType Name);
 	FString GetMeshPathString(FString baseName);
 	FString GetMaterialInstancePathString(EBPOpenXRControllerDeviceType Name);
 	FString GetMaterialInstancePathString(FString baseName);
-
 };

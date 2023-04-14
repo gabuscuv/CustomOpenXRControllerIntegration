@@ -27,6 +27,7 @@ public class CustomOpenXRControllerIntegration : ModuleRules
 			{
 				"Core",
 				"OpenXRExpansionPlugin",
+				"VRExpansionPlugin",
 				"UMagicEnum"
 				// ... add other public dependencies that you statically link with here ...
 			}

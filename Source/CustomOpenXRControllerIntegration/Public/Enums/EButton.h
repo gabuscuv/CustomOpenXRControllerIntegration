@@ -6,7 +6,7 @@
 #include "EButton.generated.h"
 
 /**
- * 
+ *
  */
 UENUM(BlueprintType)
 enum class EButton : uint8
