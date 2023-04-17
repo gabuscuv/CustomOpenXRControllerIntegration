@@ -1,0 +1,101 @@
+// Fill out your copyright notice in the Description page of Project Settings.
+
+#include "OpenXRControllerCoordinatorComponent.h"
+#include "TimerManager.h"
+
+#include "Enums/EButton.h"
+#include "VRGripInterface.h"
+#include "Interface/IOpenXRController.h"
+
+void UOpenXRControllerCoordinatorComponent::BeginPlay()
+{
+    TArray<UChildActorComponent*> ChildActorArray;
+    GetOwner()->GetComponents<UChildActorComponent>(ChildActorArray);
+    for (auto component : ChildActorArray)
+    {
+        if (component->GetName().Equals(LeftControllerComponentName))
+        {
+            LeftController = component;
+        }
+
+        if (component->GetName().Equals(RightControllerComponentName))
+        {
+            RightController = component;
+        }
+
+        if(LeftController && RightController ){break;}
+    }
+
+        if(!LeftController){UE_LOG(LogTemp, Warning, TEXT("WARNING: It doesn't found the Left Controller"));;}
+        if(!RightController){UE_LOG(LogTemp, Warning, TEXT("WARNING: It doesn't found the Right Controller"));;}
+
+    }
+
+void UOpenXRControllerCoordinatorComponent::ShowControllerAndHighlightButtons(EActionButtons button, bool lefthanded)
+{
+
+    switch (button)
+    {
+        // AnyHand
+    case EActionButtons::Grip:
+        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::Grip, lefthanded, true);
+        break;
+    // Left Hand in Right Handed (viceversa for Left Handed)
+    case EActionButtons::Movement:
+        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::Joystick, !lefthanded, false);
+        break;
+    // Left Hand in Right Handed (viceversa for Left Handed)
+    case EActionButtons::OpenHolograph:
+        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::TopButton, !lefthanded, false);
+        break;
+    // Left Hand in Right Handed (viceversa for Left Handed)
+    case EActionButtons::OpenGameSystemMenu:
+        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::BottomButton, !lefthanded, false);
+        break;
+
+    default:
+        break;
+    }
+}
+
+void UOpenXRControllerCoordinatorComponent::ShouldShowController(bool left, AActor *actor)
+{
+    if (!actor->GetClass()->ImplementsInterface(UVRGripInterface::StaticClass())){return;}
+    bool isHeld;
+    TArray<FBPGripPair> uselessData;
+    IVRGripInterface::Execute_IsHeld(actor, uselessData, isHeld);
+    if (!isHeld){return;}
+ 
+    isStillHeldHand = isHeld;
+    GetOwner()->GetWorldTimerManager().SetTimer(HeldTimerHandle, this, &UOpenXRControllerCoordinatorComponent::shouldShowController_TimerElapsed, HeldTimerDuration, false);
+}
+
+void UOpenXRControllerCoordinatorComponent::HideControllerVisibility()
+{
+    if (!LeftController->GetVisibleFlag() || !RightController->GetVisibleFlag()){return;}
+
+    LeftController->SetVisibility(false,true);
+    RightController->SetVisibility(false,true);
+}
+
+void UOpenXRControllerCoordinatorComponent::shouldShowController_TimerElapsed()
+{
+    if (!isStillHeldHand){return;}
+
+    ShowControllerAndHighlightButtons(EActionButtons::Grip, isLeft);
+}
+
+
+AActor *UOpenXRControllerCoordinatorComponent::GetChildActor(bool bRightDominantHand)
+{
+    return GetChildActorComponent(bRightDominantHand)->GetChildActor();
+}
+
+UChildActorComponent *UOpenXRControllerCoordinatorComponent::GetChildActorComponent(bool bRightDominantHand)
+{
+    return bRightDominantHand ? LeftController : RightController;
+}
