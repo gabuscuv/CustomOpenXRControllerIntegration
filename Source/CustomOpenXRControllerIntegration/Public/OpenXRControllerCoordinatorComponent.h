@@ -18,18 +18,17 @@ class CUSTOMOPENXRCONTROLLERINTEGRATION_API UOpenXRControllerCoordinatorComponen
 
 public:
 	UPROPERTY(EditAnywhere)
-	float HeldTimerDuration;
+	float HeldTimerDuration = 0.5f;
 	UPROPERTY(EditAnywhere)
-	FString LeftControllerComponentName;
+	FString LeftControllerComponentName = "OculusLeftController";
 	UPROPERTY(EditAnywhere)
-	FString RightControllerComponentName;
+	FString RightControllerComponentName = "OculusRightController";
 
-protected:
-
-virtual void BeginPlay() override;
 
 private:
 	FTimerHandle HeldTimerHandle;
+	UChildActorComponent* LeftController;
+	UChildActorComponent* RightController;
 	bool isLeft = false;
 	bool isStillHeldHand = false;
 
@@ -37,14 +36,17 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ShowControllerAndHighlightButtons(EActionButtons button, bool lefthanded);
 	UFUNCTION(BlueprintCallable)
-	void ShouldShowController(bool left, AActor *actor);
+	void ShouldShowController(bool left, UObject *object);
 	UFUNCTION(BlueprintCallable)
 	void HideControllerVisibility();
+	UFUNCTION(BlueprintCallable)
+	void EndsOverlappingObject();
+
+protected:
+	virtual void BeginPlay() override;
 
 private:
 	UChildActorComponent* GetChildActorComponent(bool bRightDominantHand);
 	AActor* GetChildActor(bool bRightDominantHand);
-	UChildActorComponent* LeftController;
-	UChildActorComponent* RightController;
 	void shouldShowController_TimerElapsed();
 };

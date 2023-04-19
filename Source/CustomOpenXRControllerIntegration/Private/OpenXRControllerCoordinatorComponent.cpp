@@ -62,12 +62,12 @@ void UOpenXRControllerCoordinatorComponent::ShowControllerAndHighlightButtons(EA
     }
 }
 
-void UOpenXRControllerCoordinatorComponent::ShouldShowController(bool left, AActor *actor)
+void UOpenXRControllerCoordinatorComponent::ShouldShowController(bool left, UObject * object)
 {
-    if (!actor->GetClass()->ImplementsInterface(UVRGripInterface::StaticClass())){return;}
+    if (!object->GetClass()->ImplementsInterface(UVRGripInterface::StaticClass())){return;}
     bool isHeld;
     TArray<FBPGripPair> uselessData;
-    IVRGripInterface::Execute_IsHeld(actor, uselessData, isHeld);
+    IVRGripInterface::Execute_IsHeld(object, uselessData, isHeld);
     if (!isHeld){return;}
  
     isStillHeldHand = isHeld;
@@ -80,6 +80,12 @@ void UOpenXRControllerCoordinatorComponent::HideControllerVisibility()
 
     LeftController->SetVisibility(false,true);
     RightController->SetVisibility(false,true);
+}
+
+void UOpenXRControllerCoordinatorComponent::EndsOverlappingObject()
+{
+    isStillHeldHand = false;
+    HideControllerVisibility();
 }
 
 void UOpenXRControllerCoordinatorComponent::shouldShowController_TimerElapsed()
