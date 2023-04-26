@@ -28,6 +28,14 @@
 		{
 			"Name": "OpenXRExpansionPlugin",
 			"Enabled": true
+		},
+		{
+			"Name": "VRExpansionPlugin",
+			"Enabled": true
+		},
+		{
+			"Name": "UMagicEnum",
+			"Enabled": true
 		}
 	]
 }
