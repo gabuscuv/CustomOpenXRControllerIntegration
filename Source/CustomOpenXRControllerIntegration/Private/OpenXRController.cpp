@@ -13,7 +13,11 @@ AOpenXRController::AOpenXRController()
 	PrimaryActorTick.bCanEverTick = false;
 	// Base = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("SpringArm"));
 	StaticMeshController = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Base"));
+
+	StaticMeshController->SetStaticMesh((UStaticMesh *)StaticLoadObject(
+		UStaticMesh::StaticClass(), nullptr, *GetMeshPathString("OculusTouch_v2"), nullptr, LOAD_None, nullptr));
 }
+
 FString AOpenXRController::IsLeft()
 {
 	// Unique usecase
