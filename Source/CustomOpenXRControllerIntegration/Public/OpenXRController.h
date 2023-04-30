@@ -44,22 +44,19 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:
-	FString IsLeft();
-
 private:
 	EBPXRResultSwitch Result = EBPXRResultSwitch::OnSucceeded;
 
-	FString MeshBasePath = "/OpenXR/Devices/";
-	FString MaterialInstancePath = "/CustomOpenXRControllerIntegration/Materials/";
+	static const inline FString MeshBasePath = "/OpenXR/Devices/";
+	static const inline FString MaterialInstancePath = "/CustomOpenXRControllerIntegration/Materials/";
 
-	static inline TMap<int, FString> ControllersNamesDirectory = {
+	static const inline TMap<int, FString> ControllersNamesDirectory = {
 		{(int)EBPOpenXRControllerDeviceType::DT_ValveIndexController, "ValveIndex"},
 		{(int)EBPOpenXRControllerDeviceType::DT_ViveController, "HTCVive"},
 		{(int)EBPOpenXRControllerDeviceType::DT_WMRController, "MicrosoftMixedReality"},
 	};
 
-	static inline TMap<FString, FString> SubTypeControllersNamesDirectory = {
+	static const inline TMap<FString, FString> SubTypeControllersNamesDirectory = {
 		{"TouchV1", "OculusTouch"},
 		{"TouchV2", "OculusTouch_v2"},
 		{"TouchV3", "OculusTouch_v3"},
@@ -68,8 +65,9 @@ private:
 	};
 
 	void SetMesh();
-	FString GetMeshPathString(EBPOpenXRControllerDeviceType Name);
-	FString GetMeshPathString(FString baseName);
-	FString GetMaterialInstancePathString(EBPOpenXRControllerDeviceType Name);
-	FString GetMaterialInstancePathString(FString baseName);
+	static FString GetMeshPathString(EBPOpenXRControllerDeviceType Name, FString TrackingSystemName, bool leftController);
+	static FString GetMeshPathString(FString baseName, bool leftController, bool AsymmetricController = true);
+	static FString GetMaterialInstancePathString(EBPOpenXRControllerDeviceType Name, FString TrackingSystemName, bool leftController);
+	static FString GetMaterialInstancePathString(FString baseName, bool leftController, bool BiMaterial = true);
+	static FString IsLeft(bool IsLeftController);
 };
