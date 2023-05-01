@@ -38,7 +38,6 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 	// The main/default behaviour is the controller have a "Left Mesh" and a "Right Mesh"
 	switch (DeviceType)
 	{
-	case EBPOpenXRControllerDeviceType::DT_WMRController:
 	case EBPOpenXRControllerDeviceType::DT_ViveController:
 	case EBPOpenXRControllerDeviceType::DT_ViveProController:
 		return GetMeshPathString(ControllersNamesDirectory[(int)DeviceType], leftController, false);
