@@ -5,7 +5,7 @@
 
 #include <string>
 
-#include "MagicEnum/magic_enum.hpp"
+#include "UMagicEnumHelper.h"
 #include "OpenXRControllerStringsConst.h"
 
 // Sets default values
@@ -18,7 +18,7 @@ AOpenXRController::AOpenXRController()
 
 	StaticMeshController->SetStaticMesh((UStaticMesh *)StaticLoadObject(
 		UStaticMesh::StaticClass(), nullptr,
-		*UOpenXRControllerStringsConst::GetMeshPathString(
+		*FOpenXRControllerStringsConst::GetMeshPathString(
 			EBPOpenXRControllerDeviceType::DT_OculusTouchController, TEXT("Rift S"), isLeftController),
 		nullptr, LOAD_None, nullptr));
 }
@@ -52,26 +52,26 @@ void AOpenXRController::BeginPlay()
 void AOpenXRController::SetMesh()
 {
 	StaticMeshController->SetStaticMesh((UStaticMesh *)StaticLoadObject(UStaticMesh::StaticClass(), nullptr,
-																		*UOpenXRControllerStringsConst::GetMeshPathString(
+																		*FOpenXRControllerStringsConst::GetMeshPathString(
 																			DeviceType, TrackingSystemName, isLeftController),
 																		nullptr, LOAD_None, nullptr));
 
 	StaticMeshController->CreateDynamicMaterialInstance(0, (UMaterialInstance *)StaticLoadObject(
 															   UMaterialInstance::StaticClass(), nullptr,
-															   *UOpenXRControllerStringsConst::GetMaterialInstancePathString(
+															   *FOpenXRControllerStringsConst::GetMaterialInstancePathString(
 																   DeviceType, TrackingSystemName, isLeftController),
 															   nullptr, LOAD_None, nullptr));
 }
 
 void AOpenXRController::HighlightButtons_Implementation(EButton button, bool state, bool AddOffset)
 {
-	StaticMeshController->SetScalarParameterValueOnMaterials(
-		//		UMagicEnumHelper::EnumToFName<EButton>(button)
-		FName(FString(std::string(magic_enum::enum_name<EButton>(button)).c_str())),
-		(float)(!state));
+	StaticMeshController->SetScalarParameterValueOnMaterials(FMagicEnumHelper::EnumToFName<EButton>(button), (float)(!state));
 }
 
 void AOpenXRController::ClearAllHighlightButtons_Implementation()
 {
-	return;
+	for (size_t i = 0; i < magic_enum::enum_count<EButton>(); i++)
+	{
+		StaticMeshController->SetScalarParameterValueOnMaterials(FMagicEnumHelper::EnumToFName<EButton>((EButton)i), (float)(!false));
+	}
 }

@@ -2,7 +2,7 @@
 
 #include "OpenXRControllerStringsConst.h"
 
-FString UOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDeviceType DeviceType, FString TrackingSystemName, bool leftController)
+FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDeviceType DeviceType, FString TrackingSystemName, bool leftController)
 {
 
 	/*
@@ -47,7 +47,7 @@ FString UOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 	}
 }
 
-FString UOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool leftController, bool AsymmetricController /*= true by default*/)
+FString FOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool leftController, bool AsymmetricController /*= true by default*/)
 {
 	/*
 		Asymetric Examples:
@@ -60,7 +60,7 @@ FString UOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool 
 	return MeshBasePath + baseName + "/" + (AsymmetricController ? (IsLeft(leftController) + "/" + IsLeft(leftController).ToLower() + "_") : TEXT("")) + baseName + "Controller." + (AsymmetricController ? IsLeft(leftController).ToLower() + "_" : TEXT("")) + baseName + "Controller";
 }
 
-FString UOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRControllerDeviceType DeviceType, FString TrackingSystemName, bool leftController)
+FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRControllerDeviceType DeviceType, FString TrackingSystemName, bool leftController)
 {
 	if (DeviceType == EBPOpenXRControllerDeviceType::DT_OculusTouchController)
 	{
@@ -96,12 +96,12 @@ FString UOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRCo
 	}
 }
 
-FString UOpenXRControllerStringsConst::GetMaterialInstancePathString(FString baseName, bool leftController, bool BiMaterial /*= true by default*/)
+FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(FString baseName, bool leftController, bool BiMaterial /*= true by default*/)
 {
 	return MaterialInstancePath + baseName + "/" + "MI_XRController_" + baseName + (BiMaterial ? "_" + IsLeft(leftController) : TEXT("")) + ".MI_XRController_" + baseName + (BiMaterial ? "_" + IsLeft(leftController) : TEXT(""));
 }
 
-FString UOpenXRControllerStringsConst::IsLeft(bool leftController)
+FString FOpenXRControllerStringsConst::IsLeft(bool leftController)
 {
 	return leftController ? "Left" : "Right";
 };

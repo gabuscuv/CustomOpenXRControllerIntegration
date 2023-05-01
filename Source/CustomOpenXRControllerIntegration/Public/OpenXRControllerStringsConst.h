@@ -5,8 +5,8 @@
 #include "CoreMinimal.h"
 #include "OpenXRControllerStringsConst.generated.h"
 
-UCLASS()
-class CUSTOMOPENXRCONTROLLERINTEGRATION_API UOpenXRControllerStringsConst : public UObject
+USTRUCT()
+struct CUSTOMOPENXRCONTROLLERINTEGRATION_API FOpenXRControllerStringsConst
 {
     GENERATED_BODY()
 private:    
