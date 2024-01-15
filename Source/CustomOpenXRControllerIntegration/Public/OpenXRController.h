@@ -7,9 +7,10 @@
 #include "Interface/IOpenXRController.h"
 #include "OpenXRExpansionTypes.h"
 #include "OpenXRExpansionFunctionLibrary.h"
-#include "Enums/EButton.h"
-
 #include "OpenXRController.generated.h"
+
+//forward declaration
+enum EButton : uint8;
 
 UCLASS()
 class CUSTOMOPENXRCONTROLLERINTEGRATION_API AOpenXRController : public AActor, public IOpenXRControllerInterface
@@ -46,6 +47,7 @@ protected:
 
 private:
 	EBPXRResultSwitch Result = EBPXRResultSwitch::OnSucceeded;
+	FName GetEnumName(EButton button);
 
 	void SetMesh();
 

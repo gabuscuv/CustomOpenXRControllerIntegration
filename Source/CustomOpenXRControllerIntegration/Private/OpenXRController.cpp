@@ -2,10 +2,6 @@
 
 #include "OpenXRController.h"
 #include "Kismet/KismetSystemLibrary.h"
-
-#include <string>
-
-#include "UMagicEnumHelper.h"
 #include "OpenXRControllerStringsConst.h"
 
 // Sets default values
@@ -65,13 +61,19 @@ void AOpenXRController::SetMesh()
 
 void AOpenXRController::HighlightButtons_Implementation(EButton button, bool state, bool AddOffset)
 {
-	StaticMeshController->SetScalarParameterValueOnMaterials(FMagicEnumHelper::EnumToFName<EButton>(button), (float)(!state));
+	StaticMeshController->SetScalarParameterValueOnMaterials(GetEnumName(button), (float)(!state));
 }
 
 void AOpenXRController::ClearAllHighlightButtons_Implementation()
 {
-	for (size_t i = 0; i < magic_enum::enum_count<EButton>(); i++)
+	for (auto Button : TEnumRange<EButton>())
 	{
-		StaticMeshController->SetScalarParameterValueOnMaterials(FMagicEnumHelper::EnumToFName<EButton>((EButton)i), (float)(!false));
+		StaticMeshController->SetScalarParameterValueOnMaterials(GetEnumName(Button), (float)(!false));
 	}
+}
+
+
+FName AOpenXRController::GetEnumName(EButton button)
+{
+	return FName(*UEnum::GetValueAsString<EButton>(button).Replace(TEXT("EButton::"), TEXT("")));
 }

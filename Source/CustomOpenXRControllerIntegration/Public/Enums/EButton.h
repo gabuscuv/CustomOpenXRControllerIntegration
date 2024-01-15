@@ -9,7 +9,7 @@
  *
  */
 UENUM(BlueprintType)
-enum class EButton : uint8
+enum EButton : uint8
 {
     TopButton,
     BottomButton,
@@ -21,5 +21,8 @@ enum class EButton : uint8
     JoystickDown,
     JoystickLeft,
     JoystickRight,
-    AppMenuButton
+    AppMenuButton,
+    MAXHIDDEN UMETA(Hidden)
 };
+
+ENUM_RANGE_BY_COUNT(EButton, EButton::MAXHIDDEN);
