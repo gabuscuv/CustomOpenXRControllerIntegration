@@ -20,6 +20,26 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 		{
 			return GetMeshPathString(SubTypeControllersNamesDirectory["TouchV3"], leftController);
 		}
+		
+
+		if (TrackingSystemName.Contains("Quest 3"))
+		{ 
+			#ifdef MetaXRExtension
+			return GetMeshPathString_MetaExtension(SubTypeControllersNamesDirectory["TouchPlus"], leftController);
+			#else
+			return GetMeshPathString(SubTypeControllersNamesDirectory["TouchPlus"], leftController);
+			#endif
+		}
+
+		if (TrackingSystemName.Contains("Quest Pro"))
+		{
+			#ifdef MetaXRExtension
+			return GetMeshPathString_MetaExtension(SubTypeControllersNamesDirectory["TouchPro"], leftController);
+			#else
+			return GetMeshPathString(SubTypeControllersNamesDirectory["TouchPro"], leftController);
+			#endif
+			
+		}
 
 		if (TrackingSystemName.Contains("Rift S") || TrackingSystemName.Contains("Quest"))
 		{
@@ -44,7 +64,7 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 	default:
 		return GetMeshPathString(ControllersNamesDirectory[(int)DeviceType], leftController);
 	}
-}
+};
 
 FString FOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool leftController, bool AsymmetricController /*= true by default*/)
 {
@@ -57,7 +77,20 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool 
 		/OpenXR/Devices/PicoG2/PicoG2Controller.PicoG2Controller'
 	*/
 	return MeshBasePath + baseName + "/" + (AsymmetricController ? (IsLeft(leftController) + "/" + IsLeft(leftController).ToLower() + "_") : TEXT("")) + baseName + "Controller." + (AsymmetricController ? IsLeft(leftController).ToLower() + "_" : TEXT("")) + baseName + "Controller";
-}
+};
+
+/* 		
+	'/OculusXR/Meshes/LeftMetaQuestTouchPlus.LeftMetaQuestTouchPlus'
+	'/OculusXR/Meshes/LeftMetaQuestTouchPro.LeftMetaQuestTouchPro'
+*/
+
+#ifdef MetaXRExtension
+FString FOpenXRControllerStringsConst::GetMeshPathString_MetaExtension(FString baseName, bool leftController, bool AsymmetricController /*= true by default*/)
+{
+
+	return MeshBasePath_MetaExtension + IsLeft(leftController)  + baseName + "." + IsLeft(leftController)  + baseName;
+};
+#endif
 
 FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRControllerDeviceType DeviceType, FString TrackingSystemName, bool leftController)
 {
@@ -67,6 +100,17 @@ FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRCo
 		{
 			return GetMaterialInstancePathString(SubTypeControllersNamesDirectory["TouchV3"], leftController);
 		}
+
+		if (TrackingSystemName.Contains("Quest 3"))
+		{
+			return GetMaterialInstancePathString(SubTypeControllersNamesDirectory["TouchPlus"], leftController);
+		}
+
+		if (TrackingSystemName.Contains("Quest Pro"))
+		{
+			return GetMaterialInstancePathString(SubTypeControllersNamesDirectory["TouchPro"], leftController);
+		}
+	
 
 		if (TrackingSystemName.Contains("Rift S") || TrackingSystemName.Contains("Quest"))
 		{
@@ -93,12 +137,12 @@ FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(EBPOpenXRCo
 	default:
 		return GetMaterialInstancePathString(ControllersNamesDirectory[(int)DeviceType], leftController);
 	}
-}
+};
 
 FString FOpenXRControllerStringsConst::GetMaterialInstancePathString(FString baseName, bool leftController, bool BiMaterial /*= true by default*/)
 {
 	return MaterialInstancePath + baseName + "/" + "MI_XRController_" + baseName + (BiMaterial ? "_" + IsLeft(leftController) : TEXT("")) + ".MI_XRController_" + baseName + (BiMaterial ? "_" + IsLeft(leftController) : TEXT(""));
-}
+};
 
 FString FOpenXRControllerStringsConst::IsLeft(bool leftController)
 {
