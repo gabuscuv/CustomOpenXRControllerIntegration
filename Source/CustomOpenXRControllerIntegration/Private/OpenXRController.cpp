@@ -2,6 +2,7 @@
 
 #include "OpenXRController.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "HeadMountedDisplayFunctionLibrary.h"
 #include "OpenXRControllerStringsConst.h"
 
 // Sets default values
@@ -17,6 +18,8 @@ AOpenXRController::AOpenXRController()
 		*FOpenXRControllerStringsConst::GetMeshPathString(
 			EBPOpenXRControllerDeviceType::DT_OculusTouchController, TEXT("Rift S"), isLeftController),
 		nullptr, LOAD_None, nullptr));
+	SetRootComponent(StaticMeshController);
+
 }
 
 // Called when the game starts or when spawned
@@ -29,7 +32,15 @@ void AOpenXRController::BeginPlay()
 		SetMesh();
 		return;
 	}
+else
+	if (! UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayConnected())
+	{
+		return;
+	}
 #endif
+
+
+
 	size_t counter = 0, attempts = 3;
 	do
 	{

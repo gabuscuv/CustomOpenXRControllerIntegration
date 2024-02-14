@@ -26,6 +26,7 @@ public class CustomOpenXRControllerIntegration : ModuleRules
 			new string[]
 			{
 				"Core",
+				"XRBase",
 				"OpenXRExpansionPlugin",
 				"VRExpansionPlugin",
 				// ... add other public dependencies that you statically link with here ...
