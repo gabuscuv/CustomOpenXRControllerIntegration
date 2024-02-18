@@ -1,6 +1,7 @@
 // Copyright 2023 Gabriel Bustillo del Cuvillo
 
 #include "OpenXRController.h"
+#include "Components/TextRenderComponent.h" 
 #include "Kismet/KismetSystemLibrary.h"
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "OpenXRControllerStringsConst.h"
@@ -18,8 +19,23 @@ AOpenXRController::AOpenXRController()
 		*FOpenXRControllerStringsConst::GetMeshPathString(
 			EBPOpenXRControllerDeviceType::DT_OculusTouchController, TEXT("Rift S"), isLeftController),
 		nullptr, LOAD_None, nullptr));
-	SetRootComponent(StaticMeshController);
 
+	StaticMeshController->SetCollisionProfileName(FName("NoCollision"));
+
+	RootComponent = StaticMeshController;
+
+	HelpTextComponent = CreateDefaultSubobject<UTextRenderComponent>(TEXT("HelpText"));
+	if (HelpTextComponent)
+	{
+		HelpTextComponent->SetupAttachment(StaticMeshController);
+		HelpTextComponent->SetRelativeLocationAndRotation(
+			FVector(11, -2, 4), 
+			FRotator(0.0f, 180.0f, 0.0f)
+		);
+		HelpTextComponent->SetWorldSize(5.0f);
+		HelpTextComponent->SetHorizontalAlignment(EHorizTextAligment::EHTA_Center);
+	}
+	
 }
 
 // Called when the game starts or when spawned
@@ -83,6 +99,11 @@ void AOpenXRController::ClearAllHighlightButtons_Implementation()
 	}
 }
 
+
+void AOpenXRController::SetText_Implementation(const FText & text)
+{
+	HelpTextComponent->SetText(text);
+}
 
 FName AOpenXRController::GetEnumName(EButton button)
 {

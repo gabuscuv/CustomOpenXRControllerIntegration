@@ -22,8 +22,10 @@ public:
 	AOpenXRController();
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	bool isLeftController = true;
-	UPROPERTY(BlueprintReadWrite)
-	UStaticMeshComponent *StaticMeshController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* StaticMeshController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class UTextRenderComponent* HelpTextComponent;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString TrackingSystemName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -40,6 +42,10 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
 	void ClearAllHighlightButtons();
 	virtual void ClearAllHighlightButtons_Implementation() override;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
+	void SetText(const FText & text);
+	void SetText_Implementation(const FText & text) override;
 
 protected:
 	// Called when the game starts or when spawned

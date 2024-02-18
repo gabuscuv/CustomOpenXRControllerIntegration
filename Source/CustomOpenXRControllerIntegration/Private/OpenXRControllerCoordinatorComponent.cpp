@@ -33,28 +33,29 @@ void UOpenXRControllerCoordinatorComponent::BeginPlay()
 
 void UOpenXRControllerCoordinatorComponent::ShowControllerAndHighlightButtons(EActionButtons button, bool lefthanded)
 {
-
+    this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
     switch (button)
     {
         // AnyHand
     case EActionButtons::Grip:
-        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
-        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::Grip, lefthanded, true);
+        
+        IOpenXRControllerInterface::Execute_SetText(this->GetChildActor(lefthanded), FText::FromStringTable(FName("OXRControllerLocTable"), TEXT("Grip")));
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::Grip, true, true);
         break;
     // Left Hand in Right Handed (viceversa for Left Handed)
     case EActionButtons::Movement:
-        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
-        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::Joystick, !lefthanded, false);
+        IOpenXRControllerInterface::Execute_SetText(this->GetChildActor(lefthanded), FText::FromStringTable(FName("OXRControllerLocTable"), TEXT("Movement")));
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(!lefthanded), EButton::Joystick, true, false);
         break;
     // Left Hand in Right Handed (viceversa for Left Handed)
-    case EActionButtons::OpenHolograph:
-        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
-        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::TopButton, !lefthanded, false);
+    case EActionButtons::OpenInGameMenu:
+        IOpenXRControllerInterface::Execute_SetText(this->GetChildActor(lefthanded), FText::FromStringTable(FName("OXRControllerLocTable"), TEXT("OpenInGameMenu")));
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(!lefthanded), EButton::TopButton, true, false);
         break;
     // Left Hand in Right Handed (viceversa for Left Handed)
     case EActionButtons::OpenGameSystemMenu:
-        this->GetChildActorComponent(lefthanded)->SetVisibility(true,true);
-        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(lefthanded), EButton::BottomButton, !lefthanded, false);
+        IOpenXRControllerInterface::Execute_SetText(this->GetChildActor(lefthanded), FText::FromStringTable(FName("OXRControllerLocTable"), TEXT("OpenGameMenu")));
+        IOpenXRControllerInterface::Execute_HighlightButtons(this->GetChildActor(!lefthanded), EButton::BottomButton, true, false);
         break;
 
     default:

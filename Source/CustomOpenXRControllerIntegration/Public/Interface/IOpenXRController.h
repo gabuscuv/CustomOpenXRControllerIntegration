@@ -26,4 +26,6 @@ public:
 	void HighlightButtons(EButton button, bool state, bool AddOffset);
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
 	void ClearAllHighlightButtons();
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = "OpenXRController")
+	void SetText(const FText &  string);
 };

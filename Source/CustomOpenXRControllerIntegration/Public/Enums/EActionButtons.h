@@ -11,8 +11,9 @@
 UENUM(BlueprintType)
 enum class EActionButtons : uint8
 {
-    OpenHolograph,
+    OpenInGameMenu,
     OpenGameSystemMenu,
     Movement,
-    Grip
+    Grip,
+    Select
 };
