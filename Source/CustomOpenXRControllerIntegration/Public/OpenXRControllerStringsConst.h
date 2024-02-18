@@ -1,7 +1,6 @@
 // Copyright 2023 Gabriel Bustillo del Cuvillo
 
 #pragma once
-#define MetaXRExtension
 
 #include "CoreMinimal.h"
 #include "OpenXRControllerStringsConst.generated.h"
@@ -12,7 +11,7 @@ struct CUSTOMOPENXRCONTROLLERINTEGRATION_API FOpenXRControllerStringsConst
     GENERATED_BODY()
 private:    
     static const inline FString MeshBasePath = "/OpenXR/Devices/";
-	#ifdef MetaXRExtension
+	#if MetaXRExtension
 	static const inline FString MeshBasePath_MetaExtension = "/OculusXR/Meshes/";
 	#endif
 	static const inline FString MaterialInstancePath = "/CustomOpenXRControllerIntegration/Materials/";
@@ -27,7 +26,7 @@ private:
 		{"TouchV1", "OculusTouch"},
 		{"TouchV2", "OculusTouch_v2"},
 		{"TouchV3", "OculusTouch_v3"},
-		#ifdef MetaXRExtension
+		#if MetaXRExtension
 		{"TouchPlus", "MetaQuestTouchPlus"}, // For MetaXR Plugin
 	  	{"TouchPro", "MetaQuestTouchPlus"}, // For MetaXR Plugin fallback
 		#else
@@ -47,7 +46,7 @@ private:
     static FString GetMeshPathString(FString baseName, bool leftController, bool AsymmetricController = true);
     static FString GetMaterialInstancePathString(FString baseName, bool leftController, bool BiMaterial = true);
 
-	#ifdef MetaXRExtension
+	#if MetaXRExtension
 	static FString GetMeshPathString_MetaExtension(FString baseName, bool leftController, bool AsymmetricController = true);
 	#endif
 	

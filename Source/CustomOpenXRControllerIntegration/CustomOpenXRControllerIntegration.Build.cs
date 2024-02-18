@@ -1,13 +1,23 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 using UnrealBuildTool;
+using System.IO;
 
 public class CustomOpenXRControllerIntegration : ModuleRules
 {
 	public CustomOpenXRControllerIntegration(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
+
+		string PluginsPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "../../.."));
+		bool bMetaXRPlugin = Directory.Exists(Path.Combine(PluginsPath, "MetaXR"));
+		if(bMetaXRPlugin)
+		{
+			System.Console.WriteLine("[CustomOpenXRControllerIntegration] Detected MetaXR Plugin, Enabling Extensions");
+		}
 		
+		PublicDefinitions.Add("MetaXRExtension="+ (bMetaXRPlugin ? "1" : "0"));
+
 		PublicIncludePaths.AddRange(
 			new string[] {
 				// ... add public include paths required here ...
@@ -53,4 +63,5 @@ public class CustomOpenXRControllerIntegration : ModuleRules
 			}
 			);
 	}
+
 }

@@ -24,7 +24,7 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 
 		if (TrackingSystemName.Contains("Quest 3"))
 		{ 
-			#ifdef MetaXRExtension
+			#if MetaXRExtension
 			return GetMeshPathString_MetaExtension(SubTypeControllersNamesDirectory["TouchPlus"], leftController);
 			#else
 			return GetMeshPathString(SubTypeControllersNamesDirectory["TouchPlus"], leftController);
@@ -33,7 +33,7 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(EBPOpenXRControllerDevi
 
 		if (TrackingSystemName.Contains("Quest Pro"))
 		{
-			#ifdef MetaXRExtension
+			#if MetaXRExtension
 			return GetMeshPathString_MetaExtension(SubTypeControllersNamesDirectory["TouchPro"], leftController);
 			#else
 			return GetMeshPathString(SubTypeControllersNamesDirectory["TouchPro"], leftController);
@@ -84,7 +84,7 @@ FString FOpenXRControllerStringsConst::GetMeshPathString(FString baseName, bool 
 	'/OculusXR/Meshes/LeftMetaQuestTouchPro.LeftMetaQuestTouchPro'
 */
 
-#ifdef MetaXRExtension
+#if MetaXRExtension
 FString FOpenXRControllerStringsConst::GetMeshPathString_MetaExtension(FString baseName, bool leftController, bool AsymmetricController /*= true by default*/)
 {
 
