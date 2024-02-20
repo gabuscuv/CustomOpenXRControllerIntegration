@@ -52,9 +52,16 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
+#if !(DisableRetryDetection)
+	float HeldTimerDuration = 0.5f;
+	FTimerHandle WaitTimerHandle;
+	FTimerDelegate WaitTimerDelegate;
+	size_t counter = 0;
+	size_t attempts = 3;
+#endif
 	EBPXRResultSwitch Result = EBPXRResultSwitch::OnSucceeded;
 	FName GetEnumName(EButton button);
-
+	void DetectController();
 	void SetMesh();
 
 };

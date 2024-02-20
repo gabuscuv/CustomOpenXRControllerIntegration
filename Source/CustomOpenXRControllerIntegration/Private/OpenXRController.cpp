@@ -1,9 +1,10 @@
 // Copyright 2023 Gabriel Bustillo del Cuvillo
 
 #include "OpenXRController.h"
+#include "HAL/IConsoleManager.h" 
 #include "Components/TextRenderComponent.h" 
 #include "Kismet/KismetSystemLibrary.h"
-#include "HeadMountedDisplayFunctionLibrary.h"
+#include "VRExpansionFunctionLibrary.h"
 #include "OpenXRControllerStringsConst.h"
 
 // Sets default values
@@ -42,36 +43,48 @@ AOpenXRController::AOpenXRController()
 void AOpenXRController::BeginPlay()
 {
 	Super::BeginPlay();
-#if WITH_EDITORONLY_DATA
+	if (IConsoleManager::Get().FindConsoleVariable(TEXT("vr.SkipControllerDetection"))->GetBool())
+	{
+		return;
+	}
+
+	DetectController();
+}
+
+void AOpenXRController::DetectController()
+{
+	#if WITH_EDITORONLY_DATA
 	if (isSpoffingController && !UKismetSystemLibrary::IsPackagedForDistribution())
 	{
 		SetMesh();
 		return;
 	}
 else
-	if (! UHeadMountedDisplayFunctionLibrary::IsHeadMountedDisplayConnected())
+	if (! UVRExpansionFunctionLibrary::GetIsHMDConnected())
 	{
+		UE_LOG(LogTemp, Verbose, TEXT("OPENXRCONTROLLER: It doesn't detect a HMD Connected"));
 		return;
 	}
 #endif
 
-
-
-	size_t counter = 0, attempts = 3;
-	do
-	{
 		// if (Result == EBPXRResultSwitch::OnFailed){/*Delay*/}
-		UOpenXRExpansionFunctionLibrary::GetXRMotionControllerType(TrackingSystemName, DeviceType, Result);
-		counter++;
-	} while (Result != EBPXRResultSwitch::OnSucceeded || counter > attempts);
+	UOpenXRExpansionFunctionLibrary::GetXRMotionControllerType(TrackingSystemName, DeviceType, Result);
+
 	if (Result != EBPXRResultSwitch::OnSucceeded)
 	{
 		UE_LOG(LogTemp, Error, TEXT("OPENXRCONTROLLER: ERROR, It doesn't Found OpenXRController"))
+		#if !(DisableRetryDetection)
+		counter++;
+		if (counter < attempts)
+		{
+			WaitTimerDelegate = FTimerDelegate::CreateUObject(this, &AOpenXRController::DetectController);
+			GetWorld()->GetTimerManager().SetTimer(WaitTimerHandle, WaitTimerDelegate, HeldTimerDuration, false);
+		}
+		#endif
 		return;
 	}
 	SetMesh();
 }
-
 void AOpenXRController::SetMesh()
 {
 	StaticMeshController->SetStaticMesh((UStaticMesh *)StaticLoadObject(UStaticMesh::StaticClass(), nullptr,

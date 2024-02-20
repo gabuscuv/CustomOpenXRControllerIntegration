@@ -9,12 +9,17 @@ public class CustomOpenXRControllerIntegration : ModuleRules
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
 
+		bool bDisableRetryDetection= true;
+
 		string PluginsPath = Path.GetFullPath(Path.Combine(ModuleDirectory, "../../.."));
 		bool bMetaXRPlugin = Directory.Exists(Path.Combine(PluginsPath, "MetaXR"));
 		if(bMetaXRPlugin)
 		{
 			System.Console.WriteLine("[CustomOpenXRControllerIntegration] Detected MetaXR Plugin, Enabling Extensions");
 		}
+
+		PublicDefinitions.Add("DisableRetryDetection="+ (bDisableRetryDetection ? "1" : "0"));
+
 		
 		PublicDefinitions.Add("MetaXRExtension="+ (bMetaXRPlugin ? "1" : "0"));
 
