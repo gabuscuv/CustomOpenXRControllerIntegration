@@ -7,6 +7,15 @@
 #include "VRExpansionFunctionLibrary.h"
 #include "OpenXRControllerStringsConst.h"
 
+static TAutoConsoleVariable<bool> CVarSkipControllerDetection(
+    TEXT("vr.SkipControllerDetection"),
+    0,
+    TEXT("Skip The MainMenu, To go the mainMenu\n")
+    TEXT("0 = Regular Execution/default")
+    TEXT("1: Skip to the MainGame"),
+    ECVF_Default);
+
+
 // Sets default values
 AOpenXRController::AOpenXRController()
 {
@@ -43,7 +52,8 @@ AOpenXRController::AOpenXRController()
 void AOpenXRController::BeginPlay()
 {
 	Super::BeginPlay();
-	if (IConsoleManager::Get().FindConsoleVariable(TEXT("vr.SkipControllerDetection"))->GetBool())
+	
+	if (CVarSkipControllerDetection.GetValueOnAnyThread())
 	{
 		return;
 	}

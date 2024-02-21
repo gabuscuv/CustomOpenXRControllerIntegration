@@ -6,11 +6,15 @@
 #include "Enums/EButton.h"
 #include "VRGripInterface.h"
 #include "Interface/IOpenXRController.h"
+UOpenXRControllerCoordinatorComponent::UOpenXRControllerCoordinatorComponent()
+{
+	bWantsInitializeComponent = true;
+}
 
-void UOpenXRControllerCoordinatorComponent::BeginPlay()
+void UOpenXRControllerCoordinatorComponent::InitializeComponent()
 {
     TArray<UChildActorComponent*> ChildActorArray;
-    GetOwner()->GetComponents<UChildActorComponent>(ChildActorArray);
+    GetOwner()->GetComponents<UChildActorComponent*>(ChildActorArray);
     for (auto component : ChildActorArray)
     {
         if (component->GetName().Equals(LeftControllerComponentName))

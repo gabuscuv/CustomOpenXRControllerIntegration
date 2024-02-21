@@ -15,6 +15,7 @@ UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class CUSTOMOPENXRCONTROLLERINTEGRATION_API UOpenXRControllerCoordinatorComponent : public UActorComponent
 {
 	GENERATED_BODY()
+	UOpenXRControllerCoordinatorComponent();
 
 public:
 	UPROPERTY(EditAnywhere)
@@ -43,7 +44,7 @@ public:
 	void EndsOverlappingObject();
 
 protected:
-	virtual void BeginPlay() override;
+	virtual void InitializeComponent() override;
 
 private:
 	UChildActorComponent* GetChildActorComponent(bool bRightDominantHand);
